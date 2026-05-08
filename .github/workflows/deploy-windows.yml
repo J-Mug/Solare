@@ -27,7 +27,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Windows release
-        run: flutter build windows --release
+        run: flutter build windows --release --dart-define=DESKTOP_CLIENT_SECRET=${{ secrets.DESKTOP_CLIENT_SECRET }}
 
       - name: Determine version
         id: version
