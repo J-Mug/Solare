@@ -8,6 +8,14 @@ import '../../features/project/project_detail_screen.dart';
 import '../../features/notes/presentation/pages_list_screen.dart';
 import '../../features/notes/presentation/page_editor_screen.dart';
 import '../../features/branch_tree/presentation/branch_canvas_screen.dart';
+import '../../features/characters/presentation/characters_list_screen.dart';
+import '../../features/characters/presentation/character_editor_screen.dart';
+import '../../features/wiki/presentation/wiki_list_screen.dart';
+import '../../features/wiki/presentation/wiki_editor_screen.dart';
+import '../../features/episodes/presentation/episodes_list_screen.dart';
+import '../../features/episodes/presentation/episode_editor_screen.dart';
+import '../../features/moodboard/presentation/moodboard_screen.dart';
+import '../../features/timeline/presentation/timeline_screen.dart';
 
 // ---------------------------------------------------------------------------
 // Auth-aware redirect notifier
@@ -85,6 +93,63 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'tree',
                 builder: (context, state) => BranchCanvasScreen(
+                  projectId: state.pathParameters['id']!,
+                ),
+              ),
+              GoRoute(
+                path: 'characters',
+                builder: (context, state) => CharactersListScreen(
+                  projectId: state.pathParameters['id']!,
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':charId',
+                    builder: (context, state) => CharacterEditorScreen(
+                      projectId: state.pathParameters['id']!,
+                      charId: state.pathParameters['charId']!,
+                    ),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'wiki',
+                builder: (context, state) => WikiListScreen(
+                  projectId: state.pathParameters['id']!,
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':entryId',
+                    builder: (context, state) => WikiEditorScreen(
+                      projectId: state.pathParameters['id']!,
+                      entryId: state.pathParameters['entryId']!,
+                    ),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'episodes',
+                builder: (context, state) => EpisodesListScreen(
+                  projectId: state.pathParameters['id']!,
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':episodeId',
+                    builder: (context, state) => EpisodeEditorScreen(
+                      projectId: state.pathParameters['id']!,
+                      episodeId: state.pathParameters['episodeId']!,
+                    ),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: 'moodboard',
+                builder: (context, state) => MoodboardScreen(
+                  projectId: state.pathParameters['id']!,
+                ),
+              ),
+              GoRoute(
+                path: 'timeline',
+                builder: (context, state) => TimelineScreen(
                   projectId: state.pathParameters['id']!,
                 ),
               ),

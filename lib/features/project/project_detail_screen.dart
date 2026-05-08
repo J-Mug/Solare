@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/auth/auth_provider.dart';
 import '../../core/firebase/project_sync_provider.dart';
+import '../../core/platform/feature_flags.dart';
 import '../../core/project/project_provider.dart';
 import '../../shared/widgets/app_layout.dart';
 
@@ -24,7 +25,6 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen> {
 
   @override
   void dispose() {
-    // Deactivate sync when leaving the project
     final sync = ref.read(activeProjectSyncProvider);
     sync?.dispose();
     ref.read(activeProjectSyncProvider.notifier).state = null;
@@ -48,55 +48,59 @@ class _ProjectDetailScreenState extends ConsumerState<ProjectDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pid = widget.id;
+
+    final features = [
+      _Feature('Notes', Icons.description_outlined, '/projects/$pid/notes'),
+      _Feature('Branch Tree', Icons.account_tree, '/projects/$pid/tree'),
+      _Feature('캐릭터', Icons.people_outline, '/projects/$pid/characters'),
+      _Feature('위키', Icons.menu_book_outlined, '/projects/$pid/wiki'),
+      _Feature('에피소드', Icons.edit_note, '/projects/$pid/episodes'),
+      _Feature('타임라인', Icons.timeline, '/projects/$pid/timeline'),
+      if (FeatureFlags.hasMoodboard)
+        _Feature('무드보드', Icons.palette_outlined, '/projects/$pid/moodboard'),
+    ];
+
     return AppLayout(
-      title: 'Project: ${widget.id}',
+      title: 'Project: $pid',
       showProjectSidebar: true,
-      projectId: widget.id,
-      child: DefaultTabController(
-        length: 4,
-        child: Column(
-          children: [
-            const TabBar(
-              tabs: [
-                Tab(text: 'Notes'),
-                Tab(text: 'Branch Tree'),
-                Tab(text: 'Characters'),
-                Tab(text: 'Wiki'),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
+      projectId: pid,
+      child: GridView.builder(
+        padding: const EdgeInsets.all(16),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 1.4,
+        ),
+        itemCount: features.length,
+        itemBuilder: (context, i) {
+          final f = features[i];
+          return Card(
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () => context.go(f.route),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Center(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.description_outlined),
-                      onPressed: () =>
-                          context.go('/projects/${widget.id}/notes'),
-                      label: const Text('노트 보기'),
-                    ),
-                  ),
-                  Center(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.account_tree),
-                      onPressed: () =>
-                          context.go('/projects/${widget.id}/tree'),
-                      label: const Text('분기 수형도 열기'),
-                    ),
-                  ),
-                  const Center(
-                    child: Text('Characters Tab',
-                        style: TextStyle(color: Colors.grey)),
-                  ),
-                  const Center(
-                    child: Text('Wiki Tab',
-                        style: TextStyle(color: Colors.grey)),
-                  ),
+                  Icon(f.icon, size: 32,
+                      color: Theme.of(context).colorScheme.primary),
+                  const SizedBox(height: 8),
+                  Text(f.label,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+}
+
+class _Feature {
+  final String label;
+  final IconData icon;
+  final String route;
+  const _Feature(this.label, this.icon, this.route);
 }

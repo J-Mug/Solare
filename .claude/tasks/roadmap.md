@@ -126,50 +126,44 @@
 
 > Phase 1 완전 완료 후 시작
 
-- [ ] 2-1. Characters Feature
-  - [ ] character_model.dart (MBTI, 배경, 습관, 트라우마, 관계)
-  - [ ] characters_repository.dart + impl
-  - [ ] character_editor_screen.dart
-  - [ ] 관계망 시각화 (flutter_flow_chart 재사용)
+- [x] 2-1. Characters Feature
+  - [x] character_model.dart (MBTI, 배경, 습관, 트라우마, 관계)
+  - [x] characters_repository.dart + impl
+  - [x] characters_list_screen.dart + character_editor_screen.dart
+  - [ ] 관계망 시각화 (flutter_flow_chart 재사용) — TODO Phase 3
 
-- [ ] 2-2. Wiki Feature
-  - [ ] wiki_model.dart
-  - [ ] wiki_repository.dart + impl
-  - [ ] wiki_editor_screen.dart (appflowy_editor 재사용)
-  - [ ] [[내부 링크]] 파싱 및 이동
+- [x] 2-2. Wiki Feature
+  - [x] wiki_model.dart
+  - [x] wiki_repository.dart + impl
+  - [x] wiki_list_screen.dart + wiki_editor_screen.dart (appflowy_editor)
+  - [x] [[내부 링크]] 파싱 및 이동
 
-- [ ] 2-3. Episodes Feature
-  - [ ] episode_model.dart
-  - [ ] episode_editor_screen.dart (appflowy_editor 재사용)
-  - [ ] 글자 수 카운터
-  - [ ] 타이프라이터 스크롤
+- [x] 2-3. Episodes Feature
+  - [x] episode_model.dart
+  - [x] episodes_list_screen.dart + episode_editor_screen.dart
+  - [x] 글자 수 카운터 (하단 바)
+  - [ ] 타이프라이터 스크롤 — TODO Phase 3
 
-- [ ] 2-4. Moodboard Feature (exe 전용)
-  - [ ] FeatureFlags.hasMoodboard 체크
-  - [ ] 캔버스 자유 배치
-  - [ ] 색상/텍스트 블록
-  - [ ] 이미지 업로드 → Drive moodboard/images/
+- [x] 2-4. Moodboard Feature (exe 전용)
+  - [x] FeatureFlags.hasMoodboard 체크
+  - [x] 캔버스 자유 배치 (Stack + Positioned + GestureDetector)
+  - [x] 색상/텍스트 블록
+  - [ ] 이미지 업로드 → TODO Phase 3
 
-- [ ] 2-5. Timeline Feature
-  - [ ] timeline_model.dart
-  - [ ] 이벤트 추가/수정/삭제
-  - [ ] 캐릭터 연결
-  - [ ] 커스텀 달력 시스템
+- [x] 2-5. Timeline Feature
+  - [x] timeline_model.dart
+  - [x] timeline_screen.dart — 이벤트 추가/수정/삭제
+  - [x] 커스텀 날짜 자유 형식
+  - [ ] 캐릭터 연결 UI — TODO Phase 3
 
-- [ ] 2-6. Hemisphere 전용 기능
-  - [ ] 플레이어 상태 태그 추적 시스템
-    - [ ] 노드에 태그 부여/제거 설정
-    - [ ] 태그 조건 분기 시각화 (회색 ↔ 활성)
-    - [ ] 전역 태그 현황판
-  - [ ] 회차 레이어 뷰 (1회차 / 2회차 토글)
-  - [ ] 월드 상태 변수 대시보드
+- [ ] 2-6. Hemisphere 전용 기능 — Phase 3로 이동
 
 ### Phase 2 완료 기준
-- [ ] 캐릭터 시트 CRUD + 관계망
-- [ ] 위키 CRUD + 내부 링크
-- [ ] 에피소드 에디터
-- [ ] 무드보드 (exe)
-- [ ] 타임라인
+- [x] 캐릭터 시트 CRUD + 습관/트라우마/관계
+- [x] 위키 CRUD + 내부 링크
+- [x] 에피소드 에디터 + 글자 수
+- [x] 무드보드 (exe, 텍스트/색상 블록)
+- [x] 타임라인 (이벤트 CRUD)
 
 ---
 

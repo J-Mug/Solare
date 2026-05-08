@@ -22,10 +22,15 @@ Hemisphere 작업을 이 앱 하나에서 할 수 있는 상태.
 완료: appDataFolder 기준 CRUD 구현됨
 수정: stream.toBytes() → toList() 패치 완료
 
-### [~] 1-3. LocalDatabase 구현
-파일: lib/core/db/app_database.dart
-상태: placeholder. Drift 스키마 작성 필요.
-TODO: pages, branch_nodes, branch_edges, sync_queue 테이블 추가
+### [x] 1-3. LocalDatabase 구현
+파일: lib/core/db/app_database.dart, db_provider.dart
+완료: Drift 스키마 (pages, branch_nodes, branch_edges, sync_queue)
+      app_database.g.dart 코드 생성 완료 (2339줄)
+      db_provider.dart — appDatabaseProvider (Riverpod)
+      빌드: dart.exe run build_runner build (run_build.ps1 참고)
+확인:
+  - [ ] 마이그레이션 실행 확인
+  - [ ] Repository에서 Drift 캐시 통합 (현재 in-memory map 사용 중)
 
 ### [x] 1-4. SyncEngine 구현
 파일: lib/core/sync/sync_engine.dart, sync_queue.dart

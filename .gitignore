@@ -33,7 +33,6 @@ coverage/
 !.env.example
 
 # Flutter generated
-lib/generated_plugin_registrant.dart
 
 # Windows build artifacts (keep windows/ folder for platform config)
 windows/flutter/generated_plugin_registrant.cc

@@ -47,3 +47,22 @@ Hemisphere 게임 개발에 직접 사용하며 검증 후 공개 배포 예정.
 - 하나의 작업 = 하나의 feature 또는 하나의 레이어
 - 완성되지 않은 기능은 TODO 주석으로 명시하고 stub으로 남긴다
 - 테스트는 핵심 로직(sync, auth, drive)에만 작성한다
+
+## 하네스 사용법
+
+### 스킬 (슬래시 명령)
+- `/start` — 세션 시작 시 컨텍스트 복원 + 현재 상태 요약
+- `/next-task` — 다음 미완료 작업 자동 탐색 후 시작
+- `/done [작업번호]` — 완료 기록 (예: `/done 1-7`)
+- `/new-feature [이름]` — 새 feature 폴더 스캐폴딩
+- `/arch-check [경로]` — 아키텍처 규칙 위반 검사
+- `/build-prep [web|windows|all]` — 배포 전 체크리스트
+
+### 에이전트 페르소나 (.claude/agents/)
+- `architect` — 아키텍처 결정 어드바이저 (구현 안 함, 판단만)
+- `drive-sync` — Drive/Firebase 데이터 레이어 전문가
+- `flutter-ui` — Flutter presentation 레이어 구현
+- `mcp-server` — Node.js MCP 서버 전문가 (Flutter 코드 건드리지 않음)
+
+### 세션 시작 최단 경로
+새 세션에서 `/start` 하나로 전체 컨텍스트 복원 + 다음 작업 파악.
