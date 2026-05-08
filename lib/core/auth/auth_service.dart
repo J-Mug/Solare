@@ -44,6 +44,13 @@ class AuthService {
     // Desktop: restore from secure storage, auto-refresh if expired
     final token = await _storage.read(key: 'access_token');
     if (token == null) return null;
+    // Old tokens (saved before refresh-token fix) have no expiry info.
+    // Discard them to force a fresh login that saves the refresh token.
+    final expiryStr = await _storage.read(key: 'token_expiry');
+    if (expiryStr == null) {
+      await _storage.delete(key: 'access_token');
+      return null;
+    }
     final email = await _storage.read(key: 'user_email') ?? '';
     await _refreshDesktopTokenIfNeeded();
     final valid = await _storage.read(key: 'access_token');
