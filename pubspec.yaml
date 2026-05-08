@@ -1,0 +1,38 @@
+name: solare
+description: "노션형 노트 + 세계관 창작 + TRPG 분기 설계를 하나로 합친 창작 플랫폼. Google Drive 기반 동기화, 실시간 협업 지원."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_sign_in: ^6.2.1
+  googleapis: ^13.2.0
+  googleapis_auth: ^1.6.0
+  flutter_secure_storage: ^9.2.2
+  firebase_core: ^3.6.0
+  firebase_database: ^11.1.4
+  drift: ^2.20.2
+  drift_flutter: ^0.2.4
+  sqlite3_flutter_libs: ^0.5.24
+  appflowy_editor: ^6.2.0
+  flutter_flow_chart: ^4.1.1
+  flutter_riverpod: ^2.5.1
+  riverpod_annotation: ^2.3.5
+  connectivity_plus: ^6.1.0
+  go_router: ^14.6.2
+  http: ^1.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  drift_dev: ^2.20.2
+  riverpod_generator: ^2.4.0
+  build_runner: ^2.4.11
+
+flutter:
+  uses-material-design: true

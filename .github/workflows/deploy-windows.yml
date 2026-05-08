@@ -1,0 +1,67 @@
+name: Build Windows & Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version tag (e.g. v1.0.0)'
+        required: true
+        default: 'v0.1.0'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.x'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows release
+        run: flutter build windows --release
+
+      - name: Determine version
+        id: version
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            echo "value=$env:GITHUB_REF_NAME" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "value=${{ github.event.inputs.tag }}" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Package as zip
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path "build\windows\x64\runner\Release\*" `
+            -DestinationPath "solare-windows-${{ steps.version.outputs.value }}.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.value }}
+          name: Solare ${{ steps.version.outputs.value }}
+          body: |
+            ## Solare Windows 릴리즈
+
+            ### 설치 방법
+            1. `solare-windows-*.zip` 다운로드
+            2. 압축 해제 후 `solare.exe` 실행
+            3. Windows Defender 경고 시: "추가 정보" → "실행" 클릭
+
+            ### 첫 실행
+            - Google 로그인 시 브라우저가 열립니다
+            - 로그인 완료 후 앱으로 자동 복귀합니다
+          files: solare-windows-*.zip
+          draft: false
+          prerelease: ${{ contains(steps.version.outputs.value, '-') }}

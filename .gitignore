@@ -1,0 +1,42 @@
+# Build outputs
+build/
+dist/
+
+# Dependencies
+node_modules/
+.pub-cache/
+.pub/
+.packages
+
+# Dart/Flutter tool files
+.dart_tool/
+*.iml
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE
+.idea/
+.vscode/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+coverage/
+
+# Environment / secrets
+.env*
+!.env.example
+
+# Flutter generated
+lib/generated_plugin_registrant.dart
+
+# Windows build artifacts (keep windows/ folder for platform config)
+windows/flutter/generated_plugin_registrant.cc
+windows/flutter/generated_plugin_registrant.h
+windows/flutter/generated_plugins.cmake
+

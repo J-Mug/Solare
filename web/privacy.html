@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solare — 개인정보처리방침</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.7;
+      color: #333;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+    h2 { font-size: 1.2rem; margin-top: 2rem; color: #555; }
+    .updated { color: #888; font-size: 0.9rem; margin-bottom: 2rem; }
+    a { color: #e65100; }
+  </style>
+</head>
+<body>
+  <h1>Solare 개인정보처리방침</h1>
+  <p class="updated">최종 업데이트: 2026년 5월 8일</p>
+
+  <p>
+    Solare(이하 "앱")는 사용자의 개인정보를 소중히 여깁니다.
+    본 방침은 앱이 수집하는 정보와 그 사용 방법을 설명합니다.
+  </p>
+
+  <h2>1. 수집하는 정보</h2>
+  <p>앱은 Google 로그인을 통해 다음 정보에 접근합니다:</p>
+  <ul>
+    <li><strong>Google 계정 이메일 주소</strong> — 사용자 식별 및 협업 초대에 사용됩니다.</li>
+    <li><strong>Google Drive (앱 전용 폴더)</strong> — 사용자의 노트, 분기 수형도, 프로젝트 데이터를
+      사용자 본인의 Google Drive <code>appDataFolder</code>에 저장합니다.
+      이 폴더는 앱 외부에서 접근할 수 없으며, 오직 Solare만 읽고 쓸 수 있습니다.</li>
+  </ul>
+
+  <h2>2. 정보 사용 목적</h2>
+  <ul>
+    <li>사용자 데이터(노트, 분기 설계, 캐릭터 정보 등)를 안전하게 저장하고 기기 간 동기화</li>
+    <li>협업 기능 — 팀원 초대 및 실시간 변경 사항 동기화</li>
+  </ul>
+
+  <h2>3. 제3자 공유</h2>
+  <p>
+    앱은 사용자 데이터를 제3자에게 판매하거나 공유하지 않습니다.
+    협업 기능 사용 시, 실시간 변경 내용(delta)이 Firebase Realtime Database를 통해
+    같은 프로젝트의 팀원에게만 전달됩니다. 원본 데이터는 항상 사용자 본인의 Google Drive에 저장됩니다.
+  </p>
+
+  <h2>4. 데이터 보관 및 삭제</h2>
+  <p>
+    모든 데이터는 사용자 본인의 Google Drive에 저장됩니다.
+    데이터 삭제를 원하시면 Google Drive 설정에서 앱 접근 권한을 취소하거나,
+    앱 내 "앱 데이터 삭제" 기능을 이용하시면 됩니다.
+  </p>
+
+  <h2>5. 보안</h2>
+  <p>
+    인증 토큰은 기기의 안전한 저장소(flutter_secure_storage)에 보관되며,
+    서버에 전송되지 않습니다. 앱은 Google OAuth 2.0 표준 인증 방식을 사용합니다.
+  </p>
+
+  <h2>6. 문의</h2>
+  <p>
+    개인정보처리방침에 관한 문의사항은 GitHub 이슈로 남겨주세요:
+    <a href="https://github.com/mug2874/solare/issues" target="_blank">
+      github.com/mug2874/solare/issues
+    </a>
+  </p>
+</body>
+</html>

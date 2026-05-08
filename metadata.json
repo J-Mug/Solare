@@ -1,0 +1,6 @@
+{
+  "name": "Solare",
+  "description": "A cross-platform Flutter app for notes, wiki, and collaborative storytelling with Google Drive and Firebase integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

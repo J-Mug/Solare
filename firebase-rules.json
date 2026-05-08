@@ -1,0 +1,22 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "invites": {
+      "$emailKey": {
+        ".read": true,
+        ".write": true
+      }
+    },
+
+    "projects": {
+      "$projectId": {
+        "deltas": {
+          ".read": true,
+          ".write": true
+        }
+      }
+    }
+  }
+}
