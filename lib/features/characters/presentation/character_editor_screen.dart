@@ -49,11 +49,12 @@ class _CharacterEditorScreenState
   }
 
   void _loadChar(CharacterModel c) {
-    if (_char?.id == c.id && !_dirty) return;
+    if (_char?.id == c.id) return; // only reload when character changes
     _char = c;
     _nameCtrl.text = c.name;
     _mbtiCtrl.text = c.mbti ?? '';
     _backstoryCtrl.text = c.backstory;
+    _dirty = false;
   }
 
   void _save() {

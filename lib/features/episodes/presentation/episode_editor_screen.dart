@@ -116,10 +116,11 @@ class _EpisodeEditorScreenState extends ConsumerState<EpisodeEditorScreen> {
       wordCount: wordCount,
     );
 
-    await ref
-        .read(episodesProvider(widget.projectId).notifier)
-        .saveEpisode(updated);
-
+    try {
+      await ref
+          .read(episodesProvider(widget.projectId).notifier)
+          .saveEpisode(updated);
+    } catch (_) {}
     if (mounted) setState(() => _episode = updated);
   }
 

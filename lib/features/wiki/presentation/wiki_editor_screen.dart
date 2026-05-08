@@ -109,8 +109,9 @@ class _WikiEditorScreenState extends ConsumerState<WikiEditorScreen> {
       internalLinks: links,
     );
 
-    await ref.read(wikiProvider(widget.projectId).notifier).saveEntry(updated);
-
+    try {
+      await ref.read(wikiProvider(widget.projectId).notifier).saveEntry(updated);
+    } catch (_) {}
     if (mounted) setState(() => _entry = updated);
   }
 

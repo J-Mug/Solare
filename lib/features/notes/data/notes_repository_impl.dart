@@ -15,30 +15,36 @@ class NotesRepositoryImpl implements NotesRepository {
   @override
   Future<List<PageModel>> getPages(String projectId,
       {String? parentId}) async {
+    final pages = <PageModel>[];
+    final seenIds = <String>{};
+
     try {
       final fileNames =
           await _drive.listFiles('projects/$projectId/notes');
-      final pages = <PageModel>[];
-
       for (final fileName in fileNames) {
         if (!fileName.endsWith('.json')) continue;
         final pageId = fileName.replaceAll('.json', '');
         final page = await getPage(projectId, pageId);
         if (page != null && page.parentId == parentId) {
           pages.add(page);
+          seenIds.add(page.id);
         }
       }
-
-      pages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
-      return pages;
     } catch (_) {
-      // Offline fallback: return cached pages
-      return _cache.values
-          .where((p) =>
-              p.projectId == projectId && p.parentId == parentId)
-          .toList()
-        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      // ignore — fall through to cache merge below
     }
+
+    // Always merge cache: newly created pages may not yet appear in Drive listing
+    for (final cached in _cache.values) {
+      if (cached.projectId == projectId &&
+          cached.parentId == parentId &&
+          !seenIds.contains(cached.id)) {
+        pages.add(cached);
+      }
+    }
+
+    pages.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    return pages;
   }
 
   @override

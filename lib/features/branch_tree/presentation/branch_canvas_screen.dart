@@ -249,16 +249,29 @@ class _BranchCanvas extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FlowChart<BranchNodeData>(
-      dashboard: dashboard,
-      onDashboardTapped: (context, position) =>
-          _addNode(context, ref, position),
-      onElementPressed: (context, _, element) =>
-          _onElementPressed(context, ref, element),
-      onElementLongPressed: (context, _, element) =>
-          _onElementLongPressed(context, ref, element),
-      onNewConnection: (src, dest) =>
-          ref.read(branchProvider(projectId).notifier).onChanged(),
+    return Stack(
+      children: [
+        FlowChart<BranchNodeData>(
+          dashboard: dashboard,
+          onDashboardTapped: (context, position) =>
+              _addNode(context, ref, position),
+          onElementPressed: (context, _, element) =>
+              _onElementPressed(context, ref, element),
+          onElementLongPressed: (context, _, element) =>
+              _onElementLongPressed(context, ref, element),
+          onNewConnection: (src, dest) =>
+              ref.read(branchProvider(projectId).notifier).onChanged(),
+        ),
+        Positioned(
+          bottom: 24,
+          right: 24,
+          child: FloatingActionButton(
+            tooltip: '노드 추가',
+            onPressed: () => _addNode(context, ref, const Offset(80, 80)),
+            child: const Icon(Icons.add),
+          ),
+        ),
+      ],
     );
   }
 }
