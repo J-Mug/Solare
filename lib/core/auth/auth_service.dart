@@ -41,14 +41,15 @@ class AuthService {
       _currentUser = AuthUser(email: account.email);
       return _currentUser;
     }
-    // Desktop: restore from secure storage
+    // Desktop: restore from secure storage, auto-refresh if expired
     final token = await _storage.read(key: 'access_token');
-    if (token != null) {
-      final email = await _storage.read(key: 'user_email') ?? '';
-      _currentUser = AuthUser(email: email);
-      return _currentUser;
-    }
-    return null;
+    if (token == null) return null;
+    final email = await _storage.read(key: 'user_email') ?? '';
+    await _refreshDesktopTokenIfNeeded();
+    final valid = await _storage.read(key: 'access_token');
+    if (valid == null) return null;
+    _currentUser = AuthUser(email: email);
+    return _currentUser;
   }
 
   Future<AuthUser?> signIn() async {
@@ -63,9 +64,13 @@ class AuthService {
       return _currentUser;
     }
     // Desktop: open browser OAuth flow
-    final token = await signInWithDesktopOAuth(_desktopScopes);
-    if (token == null) return null;
-    await _storage.write(key: 'access_token', value: token);
+    final result = await signInWithDesktopOAuth(_desktopScopes);
+    if (result == null) return null;
+    await _storage.write(key: 'access_token', value: result.accessToken);
+    await _storage.write(key: 'token_expiry', value: result.expiry.toIso8601String());
+    if (result.refreshToken != null) {
+      await _storage.write(key: 'refresh_token', value: result.refreshToken!);
+    }
     _currentUser = const AuthUser(email: '');
     return _currentUser;
   }
@@ -75,6 +80,8 @@ class AuthService {
     _currentUser = null;
     await _storage.delete(key: 'access_token');
     await _storage.delete(key: 'user_email');
+    await _storage.delete(key: 'refresh_token');
+    await _storage.delete(key: 'token_expiry');
   }
 
   Future<String?> getAccessToken() async {
@@ -85,6 +92,35 @@ class AuthService {
         if (auth.accessToken != null) return auth.accessToken;
       }
     }
+    // Desktop: refresh if needed before returning
+    await _refreshDesktopTokenIfNeeded();
     return _storage.read(key: 'access_token');
+  }
+
+  /// Refreshes the desktop access token if it has expired or is about to expire.
+  /// Deletes stored tokens and returns without error if refresh fails (forces re-login).
+  Future<void> _refreshDesktopTokenIfNeeded() async {
+    if (kIsWeb) return;
+    final expiryStr = await _storage.read(key: 'token_expiry');
+    if (expiryStr == null) return; // no expiry info — assume still valid
+    final expiry = DateTime.tryParse(expiryStr);
+    if (expiry == null) return;
+    // Refresh 5 minutes before actual expiry
+    if (DateTime.now().isBefore(expiry.subtract(const Duration(minutes: 5)))) return;
+    final refreshToken = await _storage.read(key: 'refresh_token');
+    if (refreshToken == null) {
+      await _storage.delete(key: 'access_token');
+      return;
+    }
+    final result = await refreshDesktopToken(refreshToken);
+    if (result != null) {
+      await _storage.write(key: 'access_token', value: result.accessToken);
+      await _storage.write(key: 'token_expiry', value: result.expiry.toIso8601String());
+    } else {
+      // Refresh failed — clear tokens to force re-login
+      await _storage.delete(key: 'access_token');
+      await _storage.delete(key: 'refresh_token');
+      await _storage.delete(key: 'token_expiry');
+    }
   }
 }
